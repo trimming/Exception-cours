@@ -1,12 +1,9 @@
 package model;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import static java.lang.Long.parseLong;
-
-
 public class CheckAnswer {
 
     String[] answerUserArray;
@@ -14,6 +11,7 @@ public class CheckAnswer {
 
     public CheckAnswer(UserAnswer answer) {
         this.answer = answer;
+        this.answerUserArray = getAnswerUserArray();
     }
 
     public String[] getAnswerUserArray() {
@@ -33,10 +31,9 @@ public class CheckAnswer {
     }
 
     public Character parseUserAnswerToGender(){
-        String[] answers = getAnswerUserArray();
         Character gender = null;
         try {
-            for (String answer : answers) {
+            for (String answer : this.answerUserArray) {
                 if (answer.equals("f") || answer.equals("m")) {
                     gender = answer.charAt(0);
                 }
@@ -52,33 +49,32 @@ public class CheckAnswer {
         }
         return null;
     }
-    public Long parseUserAnswerToTelNumber() {
-        String[] answers = getAnswerUserArray();
+    public Long parseUserAnswerToTelNumber() throws ParseTelNumberException{
         Long telNumber = null;
         try{
             boolean res = true;
-            for(String answer: answers) {
+            for(String answer: this.answerUserArray) {
                 res = answer.matches("\\d+");
                 if (res) {
                     telNumber = Long.parseLong(answer);
                     return telNumber;
-                } else {
-                    continue;
                 }
             }
-            throw new ParseTelNumberException("Некорректный номер телефона!");
-        }
+            if(!res){
+                throw new ParseTelNumberException("Некорректный номер телефона!");
+            }
+
+            }
         catch (ParseTelNumberException e){
             System.out.println(e.getMessage());
         }
         return null;
     }
     public String parseUserAnswerToName(){
-        String[] answers = getAnswerUserArray();
         StringBuilder name = new StringBuilder();
         try{
             boolean res = true;
-            for (String s : answers) {
+            for (String s : this.answerUserArray) {
                 res = s.matches("[a-zA-zА-Яа-я]+");
                 if (res && s.length() > 1) {
                     name.append(s).append(" ");
@@ -95,14 +91,13 @@ public class CheckAnswer {
         }
         return null;
     }
-    public Date parseUserAnswerToBirthDate(){
-        String[] answers = getAnswerUserArray();
+    public Date parseUserAnswerToBirthDate() {
         Date birthDate = null;
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         try{
             boolean res = true;
-            for(String s: answers){
-                res = s.matches("\\d{2}.\\d{2}.\\d{4}");
+            for(String s: this.answerUserArray){
+                res = s.matches("\\d{2}\\.\\d{2}\\.\\d{4}");
                 if(res){
                     birthDate = format.parse(s);
                     return birthDate;
@@ -111,9 +106,17 @@ public class CheckAnswer {
                 }
             }
             throw new ParseBirthDateException("Некорректная дата дня рождения!");
-        } catch (ParseBirthDateException | java.text.ParseException e) {
+        } catch (ParseBirthDateException | ParseException e) {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+    public boolean parseUserAnswerToQuit(){
+        for (String answer : this.answerUserArray) {
+            if (answer.equals("q")) {
+                return false;
+            }
+        }
+        return true;
     }
 }

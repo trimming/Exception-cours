@@ -5,15 +5,17 @@ import java.util.Date;
 public class User {
     private String name;
     private String firstName;
+    private String secondName;
     private String lastName;
     private Date birthdate;
     private Long telNumber;
     private Character gender;
 
-    public User(String name, String firstName, String lastName, Date birthdate, Long telNumber, Character gender) {
+    public User(String name, Date birthdate, Long telNumber, Character gender) {
         this.name = name;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = name.split(" ")[0];
+        this.secondName = name.split(" ")[1];
+        this.lastName = name.split(" ")[2];
         this.birthdate = birthdate;
         this.telNumber = telNumber;
         this.gender = gender;
@@ -23,6 +25,7 @@ public class User {
         return name;
     }
 
+
     public void setName(String name) {
         this.name = name;
     }
@@ -31,16 +34,12 @@ public class User {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getSecondName() {
+        return secondName;
     }
 
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public Date getBirthdate() {
@@ -69,13 +68,13 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthdate=" + birthdate +
-                ", telNumber=" + telNumber +
-                ", gender=" + gender +
-                '}';
+        return "<" + firstName + ">" +
+                "<"  + secondName + ">" +
+                "<" + lastName + ">" +
+                "<" + birthdate + ">" +
+                "<" + telNumber + ">" +
+                "<" +gender +">";
     }
+
+
 }

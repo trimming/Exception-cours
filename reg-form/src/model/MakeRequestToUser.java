@@ -11,8 +11,7 @@ public class MakeRequestToUser implements MakeRequest{
 
     @Override
     public UserAnswer getMakeUserAnswer() {
-        System.out.println("Введите через пробел Фамилию Имя Отчество, дату рождения, телефон и пол:");
-        UserAnswer userAnswer = new UserAnswer(this.scanner.nextLine());
-        return userAnswer;
+        System.out.println("Введите через пробел Фамилию Имя Отчество, дату рождения, телефон и пол. Для выхода введите 'q':");
+        return new UserAnswer(this.scanner.nextLine());
     }
 }
